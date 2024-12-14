@@ -217,6 +217,22 @@ with st.sidebar:
         elapsed_time = (time.time() - start_time) / 60
         st.session_state['parquet_file'] = parquet_file  # Store positive data in session state
         st.success(f"Reference data successfully imported in {elapsed_time:.2f} minutes!")
+        
+    if st.button("Import Metabolite reference base"):
+        start_time = time.time()
+        progress_text = "Importing Metabolite reference base..."
+        my_bar = st.progress(0, text=progress_text)
+        script_dir = os.path.dirname(os.path.realpath(__file__))  # Répertoire du script
+        parquet_file_path = os.path.join(script_dir, 'metabolite.parquet.parquet') # Path to the negative parquet file
+        parquet_file = pd.read_parquet(parquet_file_path)
+        for percent_complete in range(100):
+            time.sleep(0.01)
+            my_bar.progress(percent_complete + 1, text=progress_text)
+        time.sleep(1)
+        my_bar.empty()
+        elapsed_time = (time.time() - start_time) / 60
+        st.session_state['parquet_file'] = parquet_file  # Store positive data in session state
+        st.success(f"Reference data successfully imported in {elapsed_time:.2f} minutes!")
 
 if st.sidebar.button("Analyze RAW Files"):
     progress_text = "Operation in progress. Please wait."
